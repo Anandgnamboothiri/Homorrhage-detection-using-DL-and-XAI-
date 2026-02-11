@@ -138,3 +138,6 @@ This repository is provided as-is for educational purposes. Add your preferred l
 ----
 
 Updated README for this project. See `ichdemo/app.py` and `train.py` for runnable examples.
+
+project pre trained model: https://drive.google.com/file/d/1eX5pK-zKbfqc6gQZeAsFIBaDYMfPe0ME/view?usp=sharing
+
