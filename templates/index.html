@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="w3-content w3-container w3-padding-64" id="portfolio">
+  {% if error %}
+  <div class="w3-panel w3-red w3-padding">
+    <p><strong>Error:</strong> {{ error }}</p>
+  </div>
+  {% endif %}
+
+  {% if prediction is defined and prediction is not none %}
+  <h3 class="w3-center">UPLOADED IMAGE</h3>
+  <div class="w3-row">
+    <div class="w3-col m12 w3-center w3-padding-large">
+      <img src={{ url }} class="w3-round w3-image w3-opacity w3-hover-opacity-off" alt="Brain Scan" width="500" height="500" onclick="onClick(this)" style="cursor:pointer">
+    </div>
+  </div>
+  <br>
+
+  <h3 class="w3-center">DIAGNOSIS</h3>
+  <p class="w3-center"><em>Binary classification: Hemorrhagic vs Normal</em></p>
+  
+  <div class="w3-row-padding">
+    <!-- Left: percentages / textual diagnosis -->
+    <div class="w3-col m6 w3-center">
+      <p class="w3-large">Hemorrhagic (Hemorrhage Detected)</p>
+      <div class="w3-light-grey">
+        <div class="w3-container w3-padding-small w3-dark-grey w3-center" style="width:{{ (prediction * 100)|int }}%">
+          {{ "%.1f"|format(prediction * 100) }}%
+        </div>
+      </div>
+      <br>
+      <p class="w3-large">Normal (No Hemorrhage)</p>
+      <div class="w3-light-grey">
+        <div class="w3-container w3-padding-small w3-teal w3-center" style="width:{{ ((1 - prediction) * 100)|int }}%">
+          {{ "%.1f"|format((1 - prediction) * 100) }}%
+        </div>
+      </div>
+      <p class="w3-padding-16">
+        <strong>Result:</strong> 
+        {% if prediction >= 0.7 %}
+        <span class="w3-text-red">Hemorrhage detected ({{ "%.1f"|format(prediction * 100) }}% confidence)</span>
+        {% elif prediction <= 0.3 %}
+        <span class="w3-text-green">Normal - No hemorrhage detected ({{ "%.1f"|format((1 - prediction) * 100) }}% confidence)</span>
+        {% else %}
+        <span class="w3-text-orange">Inconclusive ({{ "%.1f"|format(prediction * 100) }}% hemorrhage) — Image may differ from training data</span>
+        {% endif %}
+      </p>
+    </div>
+
+    <!-- Right: Grad-CAM explanation heatmap -->
+    <div class="w3-col m6 w3-center">
+      {% if gradcam_url %}
+      <p class="w3-large">Explainability (Grad-CAM Heatmap)</p>
+      <img src="{{ gradcam_url }}" class="w3-round w3-image w3-opacity w3-hover-opacity-off"
+           alt="Grad-CAM Heatmap" width="500" height="500"
+           onclick="onClick(this)" style="cursor:pointer">
+      <p class="w3-small w3-text-grey" style="margin-top:8px">
+        The red/yellow regions show areas that most influenced the model's decision.
+      </p>
+      {% else %}
+      <p class="w3-text-grey w3-small" style="margin-top:32px">
+        Grad-CAM explanation is not available for this prediction.
+      </p>
+      {% endif %}
+    </div>
+  </div>
+
+  <p class="w3-center w3-small w3-text-grey" style="margin-top:16px"><em>This model was trained on your dataset only. Images from Google, iStock, or different scan types (e.g. MRI vs CT) often produce wrong predictions. For reliable results, test only with images similar to your training data.</em></p>
+  {% endif %}
+</div>
+{% endblock %}
