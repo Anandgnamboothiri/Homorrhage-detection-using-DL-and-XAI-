@@ -141,3 +141,12 @@ Updated README for this project. See `ichdemo/app.py` and `train.py` for runnabl
 
 project pre trained model: https://drive.google.com/file/d/1eX5pK-zKbfqc6gQZeAsFIBaDYMfPe0ME/view?usp=sharing
 
+project view : 
+
+<img width="1919" height="1009" alt="Screenshot 2026-03-12 112240" src="https://github.com/user-attachments/assets/3be9f8f9-904f-4fe5-9519-f222ccdcbeb3" />
+<img width="1913" height="945" alt="image" src="https://github.com/user-attachments/assets/0b75a777-ddb0-4485-b91b-129c69ec852c" />
+
+
+
+
+
