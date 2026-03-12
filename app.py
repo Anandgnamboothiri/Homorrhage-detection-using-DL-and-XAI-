@@ -68,7 +68,18 @@ def handle_file_upload():
 
         # Preprocess and predict
         tensor = preprocess_jpg(img_array)
-        prediction = model.predict(tensor)[0][0]  # Binary: probability of Hemorrhagic
+        probability = float(model.predict(tensor)[0][0])  # Sigmoid probability of Hemorrhagic
+
+        # Convert probability to triage risk level and color
+        if probability > 0.6:
+            risk_level = "High Risk – Immediate Review Required"
+            risk_color = "red"
+        elif probability >= 0.3:
+            risk_level = "Moderate Risk – Review Soon"
+            risk_color = "orange"
+        else:
+            risk_level = "Low Risk – Routine Review"
+            risk_color = "green"
 
         # Save uploaded image for display (convert BGR to RGB for display)
         display_filename = f'upload_{safe_base}.png'
@@ -96,9 +107,30 @@ def handle_file_upload():
             import traceback
             traceback.print_exc()
 
+        # Short explainable AI report (2 sentences) based on risk level
+        if probability > 0.6:
+            xai_report = (
+                f"Predicted hemorrhage probability: {probability:.3f} (high risk). "
+                "The model identified strong hemorrhage-related patterns and recommends urgent clinical review."
+            )
+        elif probability >= 0.3:
+            xai_report = (
+                f"Predicted hemorrhage probability: {probability:.3f} (moderate risk). "
+                "The model shows partial suspicious activation in certain brain regions, suggesting that the scan should be reviewed soon."
+            )
+        else:
+            xai_report = (
+                f"Predicted hemorrhage probability: {probability:.3f} (low risk). "
+                "The model did not find significant evidence of hemorrhage, and activation patterns remain within a low-risk range."
+            )
+
         return render_template(
             'index.html',
-            prediction=prediction,
+            prediction=probability,  # backward-compatible: templates may reference 'prediction'
+            probability=probability,
+            risk_level=risk_level,
+            risk_color=risk_color,
+            xai_report=xai_report,
             url=url_for('static', filename=f'images/{display_filename}'),
             filename=display_filename,
             gradcam_url=gradcam_url
