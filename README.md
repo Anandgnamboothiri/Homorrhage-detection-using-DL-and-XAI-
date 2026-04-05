@@ -1,5 +1,8 @@
 # Brain Hemorrhage Detection (Binary Classification)
 
+<img width="1919" height="1009" alt="Screenshot 2026-03-12 112240" src="https://github.com/user-attachments/assets/3be9f8f9-904f-4fe5-9519-f222ccdcbeb3" />
+
+
 Binary classification of brain CT scans: **Hemorrhagic** vs **NORMAL** using JPG images and transfer learning (ResNet50).
 
 ## Dataset Structure
