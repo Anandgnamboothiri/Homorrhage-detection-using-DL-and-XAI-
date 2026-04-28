@@ -1,8 +1,7 @@
-streamlit
-matplotlib
+tensorflow>=2.0
+keras
+opencv-python
 numpy
-pandas
-opencv-python-headless
-tensorflow
-pillow
+flask
+matplotlib
 scikit-learn
